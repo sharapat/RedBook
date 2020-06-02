@@ -13,4 +13,9 @@
 
     <string name="home_second">Home Second</string>
     <string name="search">Search</string>
+    <string name="menu_invertebrates">Omırtqasızlar</string>
+    <string name="menu_fishes">Balıqlar</string>
+    <string name="menu_reptiles">Jerbawırlawshılar</string>
+    <string name="menu_birds">Quslar</string>
+    <string name="menu_mammals">Sútemiziwshiler</string>
 </resources>
