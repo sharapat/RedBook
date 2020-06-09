@@ -21,7 +21,6 @@ class AnimalFragment : Fragment(R.layout.fragment_animal) {
         recyclerView.adapter = myAdapter
         recyclerView.addItemDecoration(DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL))
         val type = requireArguments().getInt(MainActivity.TYPE_ID)
-        Log.d("Haywan", type.toString())
         dao = RedBookDatabase.getInstance(requireContext()).dao()
         setData(type)
     }
