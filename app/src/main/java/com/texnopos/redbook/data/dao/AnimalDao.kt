@@ -15,4 +15,7 @@ interface AnimalDao {
 
     @Update
     fun updateAnimal(animal: Animal)
+
+    @Query("SELECT * FROM book WHERE isFavorite=1")
+    fun getFavorites(): List<Animal>
 }
