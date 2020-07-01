@@ -2,8 +2,8 @@ package com.texnopos.redbook.ui.detail
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
-import android.view.MenuInflater
 import android.view.MenuItem
 import com.bumptech.glide.Glide
 import com.texnopos.redbook.R
@@ -11,9 +11,8 @@ import com.texnopos.redbook.data.RedBookDatabase
 import com.texnopos.redbook.data.dao.AnimalDao
 import com.texnopos.redbook.data.model.Animal
 import kotlinx.android.synthetic.main.activity_detail.*
-import kotlinx.android.synthetic.main.item_animal.view.*
 
-class DetailActivity : AppCompatActivity() {
+class DetailActivity : AppCompatActivity(), DetailView {
 
     companion object {
         const val ANIMAL_ID = "animalId"
@@ -22,6 +21,7 @@ class DetailActivity : AppCompatActivity() {
     private var animalId: Int = 0
     private lateinit var currentAnimal: Animal
     private lateinit var dao: AnimalDao
+    private lateinit var presenter: DetailPresenter
     private var menuItem: MenuItem? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -33,17 +33,22 @@ class DetailActivity : AppCompatActivity() {
         supportActionBar?.title = "Details"
 
         dao = RedBookDatabase.getInstance(this).dao()
+        presenter = DetailPresenter(dao, this)
         animalId = intent.getIntExtra(ANIMAL_ID, 0)
-        currentAnimal = dao.getAnimalById(animalId)
+        presenter.getAnimalById(animalId)
+    }
 
-        tvStatusContent.text = currentAnimal.status
-        tvHabitatContent.text = currentAnimal.habitat
-        tvPropagationContent.text = currentAnimal.propagation
-        tvQuantityContent.text = currentAnimal.quantity
-        tvLifestyleContent.text = currentAnimal.lifestyle
-        tvLimitingFactorsContent.text = currentAnimal.limitingFactors
-        tvBreedingContent.text = currentAnimal.breeding
-        tvSecurityContent.text = currentAnimal.security
+    override fun setDetailInfo(animal: Animal) {
+        Log.d("xaywan", animal.habitat)
+        currentAnimal = animal
+        tvStatusContent.text = animal.status
+        tvHabitatContent.text = animal.habitat
+        tvPropagationContent.text = animal.propagation
+        tvQuantityContent.text = animal.quantity
+        tvLifestyleContent.text = animal.lifestyle
+        tvLimitingFactorsContent.text = animal.limitingFactors
+        tvBreedingContent.text = animal.breeding
+        tvSecurityContent.text = animal.security
 
         Glide
             .with(this)
@@ -70,7 +75,7 @@ class DetailActivity : AppCompatActivity() {
         if (currentAnimal.isFavorite == null) currentAnimal.isFavorite = 1
         else currentAnimal.isFavorite = 1 - currentAnimal.isFavorite!!
         setFavoriteIcon()
-        dao.updateAnimal(currentAnimal)
+        presenter.updateAnimal(currentAnimal)
     }
 
     private fun setFavoriteIcon() {

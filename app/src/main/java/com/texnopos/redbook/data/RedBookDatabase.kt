@@ -13,14 +13,19 @@ abstract class RedBookDatabase : RoomDatabase() {
         private lateinit var INSTANCE: RedBookDatabase
 
         fun getInstance(context: Context) : RedBookDatabase =
-            Room.databaseBuilder(
-                context,
-                RedBookDatabase::class.java,
-                "book-database.db"
-            )
-                .createFromAsset("book-database.db")
-                .allowMainThreadQueries()
-                .build()
+            if (::INSTANCE.isInitialized) {
+                INSTANCE
+            } else {
+                INSTANCE = Room.databaseBuilder(
+                    context,
+                    RedBookDatabase::class.java,
+                    "book-database.db"
+                )
+                    .createFromAsset("book-database.db")
+                    .allowMainThreadQueries()
+                    .build()
+                INSTANCE
+            }
     }
 
     abstract fun dao() : AnimalDao

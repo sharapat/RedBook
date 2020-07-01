@@ -9,7 +9,7 @@ import com.texnopos.redbook.R
 import com.texnopos.redbook.data.model.Animal
 import kotlinx.android.synthetic.main.item_animal.view.*
 
-class FavoriteListAdapter(private val listener: AnimalItemClickListener) : RecyclerView.Adapter<FavoriteListAdapter.FavoriteViewHolder>()  {
+class FavoriteListAdapter : RecyclerView.Adapter<FavoriteListAdapter.FavoriteViewHolder>()  {
 
     inner class FavoriteViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun populateModel(model: Animal) {
@@ -23,9 +23,15 @@ class FavoriteListAdapter(private val listener: AnimalItemClickListener) : Recyc
                 .into(itemView.ivAnimal)
 
             itemView.setOnClickListener {
-                listener.onAnimalItemClick(model.id)
+                onItemClick(model.id)
             }
         }
+    }
+
+    private var onItemClick: (id: Int) -> Unit = {}
+
+    fun setOnItemClickListener(onItemClick: (id: Int) -> Unit) {
+        this.onItemClick = onItemClick
     }
 
     var models : List<Animal> = listOf()

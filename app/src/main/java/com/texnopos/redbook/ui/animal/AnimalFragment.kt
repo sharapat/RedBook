@@ -25,7 +25,7 @@ class AnimalFragment : Fragment(R.layout.fragment_animal) {
         super.onViewCreated(view, savedInstanceState)
         myAdapter.setOnItemClickListener {
             val mIntent = Intent(requireActivity(), DetailActivity::class.java)
-            mIntent.putExtra(DetailActivity.ANIMAL_ID, id)
+            mIntent.putExtra(DetailActivity.ANIMAL_ID, it)
             startActivity(mIntent)
         }
         recyclerView.adapter = myAdapter
