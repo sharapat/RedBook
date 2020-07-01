@@ -15,30 +15,28 @@ import com.texnopos.redbook.ui.MainActivity
 import com.texnopos.redbook.ui.detail.DetailActivity
 import kotlinx.android.synthetic.main.fragment_animal.*
 
-class AnimalFragment : Fragment(R.layout.fragment_animal), AnimalItemClickListener, AnimalView {
+class AnimalFragment : Fragment(R.layout.fragment_animal) {
 
-    private val myAdapter = AnimalListAdapter(this)
+    private val myAdapter = AnimalListAdapter()
     private lateinit var dao: AnimalDao
     private lateinit var presenter: AnimalPresenter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        myAdapter.setOnItemClickListener {
+            val mIntent = Intent(requireActivity(), DetailActivity::class.java)
+            mIntent.putExtra(DetailActivity.ANIMAL_ID, id)
+            startActivity(mIntent)
+        }
         recyclerView.adapter = myAdapter
         recyclerView.addItemDecoration(DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL))
         val type = requireArguments().getInt(MainActivity.TYPE_ID)
         dao = RedBookDatabase.getInstance(requireContext()).dao()
-        presenter = AnimalPresenter(dao, this)
+        presenter = AnimalPresenter(dao)
+        presenter.setFunctionBody {
+            myAdapter.models = it
+        }
         presenter.getAllAnimals(type)
-    }
-
-    override fun onAnimalItemClick(id: Int) {
-        val mIntent = Intent(requireActivity(), DetailActivity::class.java)
-        mIntent.putExtra(DetailActivity.ANIMAL_ID, id)
-        startActivity(mIntent)
-    }
-
-    override fun setData(models: List<Animal>) {
-        myAdapter.models = models
     }
 
 }

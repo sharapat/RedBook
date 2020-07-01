@@ -8,7 +8,6 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import com.texnopos.redbook.R
 import com.texnopos.redbook.data.RedBookDatabase
 import com.texnopos.redbook.data.dao.AnimalDao
-import com.texnopos.redbook.ui.animal.AnimalItemClickListener
 import com.texnopos.redbook.ui.detail.DetailActivity
 import kotlinx.android.synthetic.main.fragment_favorite.*
 
